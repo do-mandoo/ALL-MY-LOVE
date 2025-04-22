@@ -4,7 +4,7 @@ import Image from 'next/image';
 import FormInput from '@/components/form-input';
 import FormButton from '@/components/form-btn';
 import { useActionState, useEffect, useState } from 'react';
-import { handleForm } from './login/actions';
+import { handleForm } from './actions';
 
 const textChange = ['MY', 'YOUR', 'OUR'];
 
@@ -28,6 +28,7 @@ export default function Home() {
   return (
     <div className='flex flex-col justify-center min-h-screen py-8 px-32'>
       <div className='flex flex-col items-center *:font-medium mb-10'>
+        {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
         <h1 className='text-4xl font-bold text-center'>
           ALL &quot;<span className='text-pink-500'>{textChange[index]}</span>&quot; LOVE
