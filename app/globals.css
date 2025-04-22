@@ -17,6 +17,6 @@
 
 @layer components {
   .primary-btn {
-    @apply w-full bg-purple-500 text-white  font-medium  rounded-md text-center hover:bg-purple-300 hover:text-neutral-900 transition-colors;
+    @apply w-full bg-purple-500 text-white  font-medium  rounded-md text-center hover:cursor-pointer hover:bg-purple-300 active:bg-purple-700  hover:text-neutral-900 transition-colors;
   }
 }
