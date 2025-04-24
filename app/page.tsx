@@ -5,6 +5,7 @@ import Input from '@/components/input';
 import Button from '@/components/button';
 import { useActionState, useEffect, useState } from 'react';
 import { login } from './actions';
+import TweetList from '@/components/TweetList.server';
 
 const textChange = ['MY', 'YOUR', 'OUR'];
 
@@ -27,6 +28,7 @@ export default function Home() {
 
   return (
     <div className='flex flex-col justify-center min-h-screen py-8 px-32'>
+      <TweetList />
       <div className='flex flex-col items-center *:font-medium mb-10'>
         {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
