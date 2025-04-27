@@ -5,7 +5,7 @@ interface InputProps {
   errors?: string[];
   name: string;
   icon?: ReactNode; // SVG나 컴포넌트 아이콘 전달할 수 있도록 ReactNode 타입을 사용함.
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void; // 입력값 변경 시 호출되는 핸들러. 위의 value와 같은 이유로 추가함.
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void; // 입력값 변경 시 호출되는 핸들러. 위의 value와 같은 이유로 추가함.
 }
 
 export default function Input({
