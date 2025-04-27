@@ -5,9 +5,20 @@ import Input from '@/components/input';
 import Button from '@/components/button';
 import { useActionState, useEffect, useState } from 'react';
 import { login } from './actions';
-import TweetList from '@/components/TweetList.server';
+// import TweetList from '@/components/TweetList.server';
 
 const textChange = ['MY', 'YOUR', 'OUR'];
+
+type Ttweet = {
+  id: number;
+  tweet: string;
+  user: {
+    username: string;
+  };
+  like: {
+    id: number;
+  }[];
+};
 
 export default function Home() {
   const [state, dispatch] = useActionState(login, null);
@@ -16,6 +27,22 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [tweets, setTweets] = useState<Ttweet[]>([]);
+
+  // db테스트
+  useEffect(() => {
+    const fetchTweets = async () => {
+      const res = await fetch('/api/tweets');
+      const data = await res.json();
+      setTweets(data);
+    };
+    fetchTweets();
+  }, []);
+
+  // tweets가 바뀔 때만 콘솔 찍기
+  useEffect(() => {
+    console.log(tweets, 'tweets');
+  }, [tweets]);
 
   // 1초마다 변하는 문구
   const [index, setIndex] = useState(0);
@@ -28,7 +55,14 @@ export default function Home() {
 
   return (
     <div className='flex flex-col justify-center min-h-screen py-8 px-32'>
-      <TweetList />
+      <ul>
+        {tweets.map(t => (
+          <li key={t.id}>
+            <strong>{t.user.username}</strong>: {t.tweet}
+            <span> ({t.like.length} like)</span>
+          </li>
+        ))}
+      </ul>
       <div className='flex flex-col items-center *:font-medium mb-10'>
         {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
