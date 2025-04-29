@@ -5,6 +5,8 @@ import { useActionState, useState } from 'react';
 import { PASSWORD_MIN_LENGTH } from '@/lib/constants';
 import Input from '@/components/input';
 import Button from '@/components/button';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CreateAccount() {
   const [state, dispatch] = useActionState(createAccount, null);
@@ -14,10 +16,14 @@ export default function CreateAccount() {
   const [username, setUsername] = useState('');
 
   return (
-    <div className='flex flex-col gap-10 py-8 px-6'>
-      <div className='flex flex-col gap-2 *:font-medium'>
-        <h1 className='text-2xl'>안녕하세요!</h1>
-        <h2 className='text-xl'>Fill in the form below to join!</h2>
+    // <div className='flex flex-col gap-10 py-8 px-6'>
+    <div className='flex flex-col justify-center min-h-screen py-8 px-6'>
+      <div className='flex flex-col items-center *:font-medium mb-10'>
+        {/* ai로 생성한 이미지 */}
+        <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
+        <h1 className='text-4xl font-bold text-center'>
+          &quot; <span className='text-pink-500 uppercase'>join-membership</span> &quot;
+        </h1>
       </div>
       <form action={dispatch} className='flex flex-col gap-3'>
         <Input
@@ -57,6 +63,12 @@ export default function CreateAccount() {
         />
         <Button text='Create account' />
       </form>
+      <div className='flex gap-2 justify-end mt-5'>
+        <span>이미 계정이 있나요?</span>
+        <Link href='/login' className='hover:underline'>
+          로그인하러 가기
+        </Link>
+      </div>
     </div>
   );
 }

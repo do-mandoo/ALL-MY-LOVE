@@ -131,7 +131,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     session.id = user.id;
     await session.save();
 
-    // 5. redirect '/profile'
-    redirect('/profile');
+    // 5. redirect '/'
+    redirect('/');
   }
 }
