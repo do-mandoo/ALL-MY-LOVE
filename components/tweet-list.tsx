@@ -22,7 +22,7 @@ export default function TweetList({ tweets, page, totalPages }: TweetListProps) 
         {tweets.map(t => (
           <li key={t.id} className='bg-white p-4 rounded shadow'>
             <Link href={`/tweet/${t.id}`}>
-              <p className='font-bold'>{t.user.username}</p>
+              <p className='font-bold'>{t.user.username} 님의 트윗</p>
               <p className='mt-2'>{t.tweet}</p>
               <p className='mt-1 text-xs text-gray-500'>
                 {new Date(t.created_at).toLocaleString()}
