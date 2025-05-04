@@ -10,7 +10,7 @@ interface Props {
 export default async function MainPage({ searchParams }: Props) {
   const { page: rawPage } = await searchParams;
   const page = parseInt(rawPage || '1', 10);
-  const perPage = 1; // 테스트 시 1, 실제는 10
+  const perPage = 5; // 테스트 시 1, 실제는 10
   const total = await db.tweet.count();
 
   const raw = await db.tweet.findMany({
