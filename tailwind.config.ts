@@ -19,6 +19,9 @@ const config: Config = {
         sans: ['var(--font-inter)'], // 기본 본문
         slab: ['var(--font-roboto-slab)'], // 제목 전용
       },
+      backgroundImage: {
+        pendant: "url('/pendant.png')",
+      },
     },
   },
   plugins: [formsPlugin],

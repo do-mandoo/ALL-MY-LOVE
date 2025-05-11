@@ -1,47 +1,19 @@
-'use client';
+import db from '@/lib/db';
+import getSession from '@/lib/session';
+import TabBarUI from './tab-bar-UI';
 
-import {
-  HomeIcon as SolidHomeIcon,
-  NewspaperIcon as SolidNewspaperIcon,
-  UserIcon as SolidUserIcon,
-} from '@heroicons/react/24/solid';
-import {
-  HomeIcon as OutlineHomeIcon,
-  NewspaperIcon as OutlineNewspaperIcon,
-  UserIcon as OutlineUserIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+export default async function TabBar() {
+  const session = await getSession();
 
-export default function TabBar() {
-  const pathname = usePathname();
-  return (
-    <div className='fixed bottom-0 w-full mx-auto max-w-screen-md grid grid-cols-5 border-neutral-600 border-t px-5 py-3 *:text-white bg-neutral-800'>
-      <Link href='/' className='flex flex-col items-center gap-px'>
-        {pathname === '/' ? (
-          <SolidHomeIcon className='w-7 h-7' />
-        ) : (
-          <OutlineHomeIcon className='w-7 h-7' />
-        )}
-        <span>홈</span>
-      </Link>
-      <Link href='/tweet/add' className='flex flex-col items-center gap-px'>
-        {pathname === '/tweet/add' ? (
-          <SolidNewspaperIcon className='w-7 h-7' />
-        ) : (
-          <OutlineNewspaperIcon className='w-7 h-7' />
-        )}
-        <span>글쓰기</span>
-      </Link>
-
-      <Link href='/profile' className='flex flex-col items-center gap-px'>
-        {pathname === '/profile' ? (
-          <SolidUserIcon className='w-7 h-7' />
-        ) : (
-          <OutlineUserIcon className='w-7 h-7' />
-        )}
-        <span>사용자</span>
-      </Link>
-    </div>
-  );
+  let profilePath = '/login'; // 로그인이 안됐으면 로그인 페이지로
+  if (session.id) {
+    const user = await db.user.findUnique({
+      where: { id: session.id },
+      select: { username: true },
+    });
+    if (user?.username) {
+      profilePath = `/users/${user.username}`;
+    }
+  }
+  return <TabBarUI profilePath={profilePath} />;
 }

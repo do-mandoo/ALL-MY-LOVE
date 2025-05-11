@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='en'>
       <body
-        className={`${inter.className} ${robotoSlab.className} bg-black text-white max-w-screen-sm mx-auto`}
+        className={`${inter.className} ${robotoSlab.className}  bg-black text-white max-w-screen-md  mx-auto`}
       >
         {children}
       </body>

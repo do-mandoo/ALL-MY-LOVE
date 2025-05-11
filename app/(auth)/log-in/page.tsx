@@ -16,7 +16,7 @@ export default function Home() {
   const [password, setPassword] = useState('');
 
   return (
-    <div className='flex flex-col justify-center min-h-screen py-8 px-32'>
+    <div className='flex flex-col w-full min-h-screen bg-black justify-center py-8 px-32'>
       <div className='flex flex-col items-center *:font-medium mb-10'>
         {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
