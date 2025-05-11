@@ -82,11 +82,11 @@ const formSchema = z
     }
   });
 
-export async function logIn(formData: FormData) {
+export async function logIn(_prevState: unknown, formData: FormData) {
   const data = {
-    email: formData.get('email'),
-    username: formData.get('username'),
-    password: formData.get('password'),
+    email: formData.get('email')?.toString() ?? '',
+    username: formData.get('username')?.toString() ?? '',
+    password: formData.get('password')?.toString() ?? '',
   };
 
   await new Promise(res => setTimeout(res, 500)); // 0.5초 대기

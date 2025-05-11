@@ -92,12 +92,12 @@ const formSchema = z
   })
   .refine(checkPassword, { message: 'Two passwords should be same', path: ['confirm_password'] });
 
-export async function createAccount(formData: FormData) {
+export async function createAccount(_prevState: unknown, formData: FormData) {
   const data = {
-    username: formData.get('username'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-    confirm_password: formData.get('confirm_password'),
+    username: formData.get('username')?.toString() ?? '',
+    email: formData.get('email')?.toString() ?? '',
+    password: formData.get('password')?.toString() ?? '',
+    confirm_password: formData.get('confirm_password')?.toString() ?? '',
   };
 
   const result = await formSchema.safeParseAsync(data);

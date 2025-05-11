@@ -98,7 +98,7 @@ const profileSchema = z
     }
   });
 
-export async function updateProfile(formData: FormData) {
+export async function updateProfile(_prevState: unknown, formData: FormData) {
   if (!formData) return;
 
   const data = {

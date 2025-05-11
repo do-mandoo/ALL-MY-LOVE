@@ -28,7 +28,7 @@ export default function CommentInput({
     newOne,
   ]);
 
-  const interceptAction = async (formData: FormData) => {
+  const interceptAction = async (_prevState: unknown, formData: FormData) => {
     const text = formData.get('comment')?.toString() ?? '';
 
     const newComment: CommentRecord = {

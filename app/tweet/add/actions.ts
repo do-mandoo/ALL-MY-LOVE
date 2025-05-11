@@ -9,7 +9,7 @@ const tweetSchema = z.object({
   tweet: z.string().min(1, '트윗을 입력해주세요').max(280, '280자 이내로 입력해주세요'),
 });
 
-export async function addTweet(formData: FormData) {
+export async function addTweet(_prevState: unknown, formData: FormData) {
   const data = {
     tweet: formData.get('tweet'),
   };
