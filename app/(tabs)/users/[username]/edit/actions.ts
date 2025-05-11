@@ -11,7 +11,6 @@ import {
   PASSWORD_REGEX,
   USERNAME_MIN_LENGTH,
 } from '@/lib/constants';
-import { redirect } from 'next/navigation';
 
 // 이메일 도메인 검사
 const checkEmail = (email: string) => email.endsWith(EMAIL_DOMAIN);
@@ -99,7 +98,7 @@ const profileSchema = z
     }
   });
 
-export async function updateProfile(prevState: any, formData: FormData) {
+export async function updateProfile(formData: FormData) {
   if (!formData) return;
 
   const data = {
@@ -118,6 +117,7 @@ export async function updateProfile(prevState: any, formData: FormData) {
   const { username, email, bio, newPassword } = result.data;
 
   // 업데이트 데이터 구성
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateData: any = { username, email, bio };
   if (newPassword) {
     updateData.password = await bcrypt.hash(newPassword, 12);

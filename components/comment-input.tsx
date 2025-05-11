@@ -28,7 +28,7 @@ export default function CommentInput({
     newOne,
   ]);
 
-  const interceptAction = async (_: any, formData: FormData) => {
+  const interceptAction = async (formData: FormData) => {
     const text = formData.get('comment')?.toString() ?? '';
 
     const newComment: CommentRecord = {
@@ -47,7 +47,7 @@ export default function CommentInput({
     return addResponse(formData);
   };
 
-  const [_, action] = useActionState(interceptAction, null);
+  const [, action] = useActionState(interceptAction, null);
 
   return (
     <div>

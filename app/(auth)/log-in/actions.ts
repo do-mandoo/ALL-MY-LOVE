@@ -82,7 +82,7 @@ const formSchema = z
     }
   });
 
-export async function logIn(prevState: any, formData: FormData) {
+export async function logIn(formData: FormData) {
   const data = {
     email: formData.get('email'),
     username: formData.get('username'),

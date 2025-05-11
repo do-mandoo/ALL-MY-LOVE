@@ -92,7 +92,7 @@ const formSchema = z
   })
   .refine(checkPassword, { message: 'Two passwords should be same', path: ['confirm_password'] });
 
-export async function createAccount(prevState: any, formData: FormData) {
+export async function createAccount(formData: FormData) {
   const data = {
     username: formData.get('username'),
     email: formData.get('email'),

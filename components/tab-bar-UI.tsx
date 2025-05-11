@@ -1,6 +1,5 @@
 'use client';
 
-import { PlusIcon } from '@heroicons/react/24/solid';
 import {
   HomeIcon as SolidHomeIcon,
   NewspaperIcon as SolidNewspaperIcon,
