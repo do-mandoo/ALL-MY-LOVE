@@ -1,5 +1,7 @@
 import TweetList, { TweetWithUser } from '@/components/tweet-list';
 import db from '@/lib/db';
+import { PlusIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 
 interface Props {
   searchParams: { page?: string };
@@ -30,6 +32,12 @@ export default async function MainPage({ searchParams }: Props) {
   return (
     <div className='px-4 py-6'>
       <TweetList tweets={tweets} page={page} totalPages={totalPages} />
+      <Link
+        href='/tweet/add'
+        className='bg-red-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-red-400'
+      >
+        <PlusIcon className='size-10' />
+      </Link>
     </div>
   );
 }
