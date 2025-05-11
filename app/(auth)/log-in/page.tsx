@@ -5,6 +5,7 @@ import Input from '@/components/input';
 import Button from '@/components/button';
 import { useActionState, useState } from 'react';
 import { logIn } from './actions';
+import Link from 'next/link';
 
 export default function Home() {
   const [state, dispatch] = useActionState(logIn, null);
@@ -20,9 +21,8 @@ export default function Home() {
         {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />
         <h1 className='text-4xl font-bold text-center'>
-          &quot; <span className='text-pink-500'>LOG-IN</span> &quot;
+          &quot; <span className='text-pink-500 uppercase'>log-in</span> &quot;
         </h1>
-        <span>Log in with email, username, password.</span>
       </div>
       <form action={dispatch} className='flex flex-col gap-5'>
         <Input
@@ -108,6 +108,12 @@ export default function Home() {
         />
         <Button text='Log in' />
       </form>
+      <div className='flex gap-2 justify-end mt-5'>
+        <span>계정이 없나요?</span>
+        <Link href='/create-account' className='hover:underline'>
+          회원가입하러 가기
+        </Link>
+      </div>
     </div>
   );
 }
