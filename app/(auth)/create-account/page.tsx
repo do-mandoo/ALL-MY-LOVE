@@ -17,7 +17,7 @@ export default function CreateAccount() {
 
   return (
     // <div className='flex flex-col gap-10 py-8 px-6'>
-    <div className='flex flex-col justify-center min-h-screen py-8 px-6'>
+    <div className='flex flex-col justify-center bg-black w-full min-h-screen py-8 px-32'>
       <div className='flex flex-col items-center *:font-medium mb-10'>
         {/* ai로 생성한 이미지 */}
         <Image src='/pendant.png' alt='next.js logo' width={80} height={18} />

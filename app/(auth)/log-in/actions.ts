@@ -89,7 +89,7 @@ export async function logIn(prevState: any, formData: FormData) {
     password: formData.get('password'),
   };
 
-  await new Promise(res => setTimeout(res, 1000)); // 1초 대기
+  await new Promise(res => setTimeout(res, 500)); // 0.5초 대기
 
   const result = await formSchema.safeParseAsync(data);
 

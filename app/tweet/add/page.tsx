@@ -3,6 +3,7 @@
 import { addTweet } from './actions';
 import Button from '@/components/button';
 import Input from '@/components/input';
+import Image from 'next/image';
 import { useActionState } from 'react';
 
 export default function AddTweet() {
@@ -10,7 +11,9 @@ export default function AddTweet() {
 
   return (
     <div className='max-w-md mx-auto p-4'>
-      <h2 className='text-xl font-bold mb-3'>새 트윗 작성</h2>
+      <h2 className='flex justify-start items-end gap-2 text-pink-500 text-xl font-bold mb-3'>
+        <Image src='/clover_pendant.jpg' alt='next.js logo' width={30} height={30} />새 트윗 작성
+      </h2>
       <form action={action} className='space-y-2'>
         <Input
           name='tweet'

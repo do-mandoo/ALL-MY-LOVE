@@ -6,7 +6,8 @@ interface Routes {
 }
 
 const publicOnlyUrls: Routes = {
-  '/': false,
+  '/': true,
+  '/main': false,
   '/log-in': true,
   '/create-account': true,
 };
@@ -15,13 +16,14 @@ export async function middleware(request: NextRequest) {
   const session = await getSession();
   const exists = publicOnlyUrls[request.nextUrl.pathname];
 
+  // session에 id가 있다면 /페이지로, 아니라면 로그인 페이지로 유도
   if (!session?.id) {
     if (!exists) {
       return NextResponse.redirect(new URL('/log-in', request.url));
     }
   } else {
     if (exists) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/main', request.url));
     }
   }
 }

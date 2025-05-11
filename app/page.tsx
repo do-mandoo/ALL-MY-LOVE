@@ -1,43 +1,72 @@
-import TweetList, { TweetWithUser } from '@/components/tweet-list';
-import db from '@/lib/db';
-import { PlusIcon } from '@heroicons/react/24/solid';
+'use client';
+
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-interface Props {
-  searchParams: { page?: string };
-}
+const textChange = ['MY', 'YOUR', 'OUR'];
 
-export default async function MainPage({ searchParams }: Props) {
-  const { page: rawPage } = await searchParams;
-  const page = parseInt(rawPage || '1', 10);
-  const perPage = 5; // 테스트 시 1, 실제는 10
-  const total = await db.tweet.count();
+type Ttweet = {
+  id: number;
+  tweets: {
+    tweet: string;
+  }[];
+  user: {
+    username: string;
+  };
+  username: string;
+  likes: {
+    id: number;
+  }[];
+};
 
-  const raw = await db.tweet.findMany({
-    skip: (page - 1) * perPage,
-    take: perPage,
-    orderBy: { created_at: 'desc' },
-    include: { user: true },
-  });
+export default function Home() {
+  const [tweets, setTweets] = useState<Ttweet[]>([]);
+  // db테스트
+  useEffect(() => {
+    const fetchTweets = async () => {
+      const res = await fetch('/api/tweets');
+      const data = await res.json();
+      setTweets(data);
+    };
+    fetchTweets();
+  }, []);
 
-  const tweets: TweetWithUser[] = raw.map(t => ({
-    id: t.id,
-    tweet: t.tweet,
-    created_at: t.created_at.toISOString(),
-    user: { username: t.user.username },
-  }));
+  // tweets가 바뀔 때만 콘솔 찍기
+  useEffect(() => {
+    console.log(tweets, 'tweets');
+  }, [tweets]);
 
-  const totalPages = Math.ceil(total / perPage);
+  // 1초마다 변하는 문구
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % textChange.length);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className='px-4 py-6'>
-      <TweetList tweets={tweets} page={page} totalPages={totalPages} />
-      <Link
-        href='/tweet/add'
-        className='bg-red-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-red-400'
-      >
-        <PlusIcon className='size-10' />
-      </Link>
+    <div className='flex flex-col w-full min-h-screen justify-center items-center bg-black py-8 px-32'>
+      <div className='flex flex-col items-center *:font-medium mb-10'>
+        <h1 className='text-5xl font-bold text-center  uppercase'>Welcom</h1>
+
+        <Image src='/pendant.png' alt='next.js logo' width={180} height={38} />
+        <h1 className='text-4xl font-bold text-center'>
+          ALL &quot;<span className='text-pink-500'>{textChange[index]}</span>&quot; LOVE
+        </h1>
+      </div>
+      <div className='flex flex-col items-center gap-3 w-full'>
+        <Link href='/create-account' className='primary-btn text-lg py-2.5'>
+          시작하기
+        </Link>
+        <div className='flex gap-2'>
+          <span>이미 계정이 있나요?</span>
+          <Link href='/login' className='hover:underline'>
+            로그인
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
