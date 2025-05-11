@@ -1,15 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import FormInput from '@/components/form-input';
-import FormButton from '@/components/form-btn';
+import Input from '@/components/input';
+import Button from '@/components/button';
 import { useActionState, useEffect, useState } from 'react';
-import { handleForm } from './actions';
+import { login } from './actions';
 
 const textChange = ['MY', 'YOUR', 'OUR'];
 
 export default function Home() {
-  const [state, action] = useActionState(handleForm, null);
+  const [state, dispatch] = useActionState(login, null);
 
   // login버튼을 클릭해도 input의 값을 유지하기 위해 useState를 사용함.
   const [email, setEmail] = useState('');
@@ -34,13 +34,12 @@ export default function Home() {
           ALL &quot;<span className='text-pink-500'>{textChange[index]}</span>&quot; LOVE
         </h1>
       </div>
-      <form action={action} className='flex flex-col gap-5'>
-        <FormInput
+      <form action={dispatch} className='flex flex-col gap-5'>
+        <Input
           name='email'
           type='email'
           placeholder='Email'
           required
-          errors={[]}
           icon={
             <svg
               data-slot='icon'
@@ -61,13 +60,13 @@ export default function Home() {
           }
           value={email}
           onChange={e => setEmail(e.target.value)}
+          errors={state?.fieldErrors?.email}
         />
-        <FormInput
+        <Input
           name='username'
           type='text'
           placeholder='Username'
           required
-          errors={[]}
           icon={
             <svg
               data-slot='icon'
@@ -88,13 +87,13 @@ export default function Home() {
           }
           value={username}
           onChange={e => setUsername(e.target.value)}
+          errors={state?.fieldErrors?.username ?? []}
         />
-        <FormInput
+        <Input
           name='password'
           type='password'
           placeholder='Password'
           required
-          errors={state?.errors ?? []} // null값일수있어서 state에 ?를 추가.
           icon={
             <svg
               data-slot='icon'
@@ -115,13 +114,14 @@ export default function Home() {
           }
           value={password}
           onChange={e => setPassword(e.target.value)}
+          errors={state?.fieldErrors?.password ?? []}
         />
-        <FormButton text='Log in' />
+        <Button text='Log in' />
       </form>
 
       {/* 비밀번호가 맞다면 보여줄 박스 */}
       {state?.success && (
-        <div className='mt-5 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-3 text-white font-medium'>
+        <div className='mt-5 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-4 text-white font-medium'>
           <svg
             data-slot='icon'
             fill='none'
