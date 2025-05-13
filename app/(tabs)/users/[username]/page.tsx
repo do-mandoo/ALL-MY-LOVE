@@ -19,7 +19,7 @@ interface IUserProfile {
 
 export default async function UserProfilePage({ params }: IUserProfile) {
   const { username: rawUsername } = await params;
-  const username = rawUsername;
+  const username = decodeURIComponent(rawUsername);
 
   // 현재 로그인 된 사용자의 세션(userId) 가져오기
   const session = await getSession();
