@@ -63,11 +63,18 @@ export default function CreateAccount() {
         />
         <Button text='Create account' />
       </form>
-      <div className='flex gap-2 justify-end mt-5'>
-        <span>이미 계정이 있나요?</span>
-        <Link href='/login' className='hover:underline'>
-          로그인하러 가기
-        </Link>
+      <div className='flex gap-2 justify-between mt-5'>
+        <div>
+          <Link href='/' className='hover:underline'>
+            홈으로 가기
+          </Link>
+        </div>
+        <div>
+          <span>이미 계정이 있나요?</span>
+          <Link href='/login' className='hover:underline'>
+            로그인하러 가기
+          </Link>
+        </div>
       </div>
     </div>
   );

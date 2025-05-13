@@ -4,22 +4,21 @@ import getSession from '@/lib/session';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
+import { logOut } from '@/lib/log-out';
+import { Do_Hyeon } from 'next/font/google';
+import TweetFeed from '@/components/tweet-feed';
 
-// 로그아웃 서버 액션
-const logOut = async () => {
-  'use server';
-  const session = await getSession();
-  session.destroy();
-  redirect('/login');
-};
+const dohyon = Do_Hyeon({ weight: '400', subsets: ['latin'] });
 
 interface IUserProfile {
   params: { username: string };
+  searchParams: { page?: string };
 }
 
-export default async function UserProfilePage({ params }: IUserProfile) {
+export default async function UserProfilePage({ params, searchParams }: IUserProfile) {
   const { username: rawUsername } = await params;
   const username = decodeURIComponent(rawUsername);
+  const page = parseInt(searchParams.page || '1', 10);
 
   // 현재 로그인 된 사용자의 세션(userId) 가져오기
   const session = await getSession();
@@ -48,60 +47,63 @@ export default async function UserProfilePage({ params }: IUserProfile) {
   // '내 프로필'인지 판별
   const isOwner = session.id === userWithTweets.id;
 
-  // 트윗 데이터 변환 (prisma date -> string변환, 불필요 필드 제거)
-  const tweets: TweetWithUser[] = userWithTweets.tweets.map(t => ({
-    id: t.id,
-    tweet: t.tweet,
-    created_at: t.created_at.toISOString(),
-    user: { username: t.user.username },
-  }));
-
   return (
-    <div className='w-full px-10 py-4 bg-black min-h-screen pb-[98px]'>
+    <div className='relative w-full px-12 py-4 flex flex-col justify-start bg-black min-h-screen pb-[98px]'>
       {/* 프로필 헤더 */}
       <div className='mb-6 '>
-        <h1 className='text-2xl font-bold'>{userWithTweets.username}님의 정보</h1>
+        <h2 className='flex justify-start items-end gap-2  text-xl font-bold mb-3'>
+          <Image src='/heart_pendant.jpg' alt='next.js logo' width={30} height={30} />
+          <div className={`${dohyon.className} flex items-end font-bold text-blue-500 text-4xl`}>
+            {userWithTweets.username}
+            <p className='text-neutral-200 ml-0.5'>님의 정보</p>
+          </div>
+          <Image src='/heart_pendant.jpg' alt='next.js logo' width={30} height={30} />
+        </h2>
+
+        {/* 사용자 정보 */}
+        <div className='mt-5 w-full flex justify-center items-center'>
+          <Image
+            src='/pengsoo-hair.jpg'
+            alt='next.js logo'
+            width={200}
+            height={200}
+            className='rounded-4xl mb-4'
+          />
+          <div className='text-start ml-10 flex flex-col gap-4 justify-end'>
+            <p>
+              <strong className='uppercase'>ID:</strong> {userWithTweets.id}
+            </p>
+            <p>
+              <strong className='uppercase'>Email:</strong> {userWithTweets.email}
+            </p>
+            <p>
+              <strong className='uppercase'>Bio:</strong> {userWithTweets.bio || 'No bio provided.'}
+            </p>
+          </div>
+        </div>
 
         {isOwner && (
-          <div className='flex justify-end items-center'>
+          <div className='flex justify-center text-sm items-center mt-4'>
             <Link
               href={`/users/${username}/edit`}
-              className='inline-block px-4 py-2 bg-green-500 text-white rounded-md'
+              className='inline-block p-2 bg-green-500 text-white rounded-md'
             >
               프로필 편집
             </Link>
             <form action={logOut}>
-              <button className='px-4 py-2 primary-btn cursor-pointer ml-2'>로그아웃</button>
+              <button className='p-2 primary-btn bg-orange-400 cursor-pointer ml-2'>
+                로그아웃
+              </button>
             </form>
           </div>
         )}
-
-        {/* <div className='w-36 h-36 bg-amber-300 rounded-full mb-4'> */}
-        <Image
-          src='/pengsoo-hair.jpg'
-          alt='next.js logo'
-          width={200}
-          height={200}
-          className='rounded-4xl'
-        />
-        {/* </div> */}
-        <div className='mt-5 w-full flex flex-col'>
-          <p>
-            <strong>ID:</strong> {userWithTweets.id}
-          </p>
-          <p>
-            <strong>Email:</strong> {userWithTweets.email}
-          </p>
-          <p>
-            <strong>Bio:</strong> {userWithTweets.bio || 'No bio provided.'}
-          </p>
-        </div>
       </div>
 
       {/* 트윗 목록 */}
+      <hr className='border-neutral-900 mb-4' />
       <div className=''>
-        <div>{userWithTweets.username}님이 작성한 트윗들</div>
-        <TweetList tweets={tweets} page={1} totalPages={1} />
+        <div className='font-bold'>{userWithTweets.username}님이 작성한 트윗들</div>
+        <TweetFeed page={page} perPage={4} where={{ userId: userWithTweets.id }} />
       </div>
     </div>
   );

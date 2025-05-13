@@ -108,11 +108,18 @@ export default function Home() {
         />
         <Button text='Log in' />
       </form>
-      <div className='flex gap-2 justify-end mt-5'>
-        <span>계정이 없나요?</span>
-        <Link href='/create-account' className='hover:underline'>
-          회원가입하러 가기
-        </Link>
+      <div className='flex gap-2 justify-between mt-5'>
+        <div>
+          <Link href='/' className='hover:underline'>
+            홈으로 가기
+          </Link>
+        </div>
+        <div>
+          <span>계정이 없나요?</span>
+          <Link href='/create-account' className='hover:underline'>
+            회원가입하러 가기
+          </Link>
+        </div>
       </div>
     </div>
   );

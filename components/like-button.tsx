@@ -37,8 +37,8 @@ export default function LikeButton({ isLiked, likeCount, tweetId }: LikeButtonPr
     <button
       onClick={onClick}
       disabled={isPending}
-      className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2  transition-colors ${
-        state.isLiked ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-neutral-800'
+      className={`mb-10 flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2  transition-colors ${
+        state.isLiked ? 'bg-pink-500 text-white border-pink-500' : 'hover:bg-neutral-800'
       }`}
     >
       {state.isLiked ? <HeartIcon className='size-5' /> : <OutlineHeartIcon className='size-5' />}

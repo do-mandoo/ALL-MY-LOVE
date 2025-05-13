@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import {
-  EMAIL_DOMAIN,
+  PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REGEX,
   USERNAME_MAX_LENGTH,
@@ -11,9 +11,6 @@ import {
 import db from '@/lib/db';
 import { redirect } from 'next/navigation';
 import getSession from '@/lib/session';
-
-// 이메일 도메인 검사
-const checkEmail = (email: string) => email.endsWith(EMAIL_DOMAIN);
 
 // username 금지 단어 검사
 const checkUsername = (username: string) => !username.includes('potato');
@@ -30,14 +27,14 @@ const formSchema = z
   .object({
     username: z
       .string({
-        invalid_type_error: 'Username은 반드시 문자열입니다..',
-        required_error: 'Where is my username???',
+        invalid_type_error: 'Username은 반드시 문자열로 입력하세요.',
+        required_error: 'Username을 필수로 입력하세요.',
       })
       .min(USERNAME_MIN_LENGTH, {
-        message: `Username은 최소 ${USERNAME_MIN_LENGTH}글자 이상이어야 합니다.`,
+        message: `Username은 최소 ${USERNAME_MIN_LENGTH}자, 최대 ${USERNAME_MAX_LENGTH}자까지 입력이 가능합니다.`,
       })
       .max(USERNAME_MAX_LENGTH, {
-        message: `Username은 최대 ${USERNAME_MAX_LENGTH}자까지 가능합니다.`,
+        message: `Username은 최소 ${USERNAME_MIN_LENGTH}자, 최대 ${USERNAME_MAX_LENGTH}자까지 입력이 가능합니다.`,
       })
       .regex(
         /^[\p{L}][\p{L}\p{N}_\-🌊✨🎉💖🌟]{1,9}$/u,
@@ -46,15 +43,18 @@ const formSchema = z
       .trim()
       .toLowerCase()
       .refine(checkUsername, 'No potatoes allowed!'),
-    email: z
-      .string()
-      .email()
-      .toLowerCase()
-      .refine(checkEmail, `Only emails ending with "${EMAIL_DOMAIN}" are allowed.`),
+    email: z.string().email().toLowerCase(),
     password: z
       .string()
-      .min(PASSWORD_MIN_LENGTH)
-      .regex(PASSWORD_REGEX, { message: 'Password must include at least one number.' }),
+      .min(PASSWORD_MIN_LENGTH, {
+        message: `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상, ${PASSWORD_MAX_LENGTH}자 이하로 입력하셔야 합니다.`,
+      })
+      .max(PASSWORD_MAX_LENGTH, {
+        message: `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상, ${PASSWORD_MAX_LENGTH}자 이하로 입력하셔야 합니다.`,
+      })
+      .regex(PASSWORD_REGEX, {
+        message: '비밀번호는 반드시 한 개 이상의 숫자를 포함해야 합니다(0123456789).',
+      }),
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .superRefine(async ({ username }, ctx) => {
@@ -71,7 +71,7 @@ const formSchema = z
     if (user) {
       ctx.addIssue({
         code: 'custom',
-        message: 'This username is already taken',
+        message: '이미 사용중인 username입니다.',
         path: ['username'],
         fatal: true,
       });
@@ -91,14 +91,14 @@ const formSchema = z
     if (user) {
       ctx.addIssue({
         code: 'custom',
-        message: 'This email is already taken',
+        message: '이미 사용중인 이메일입니다.',
         path: ['email'],
         fatal: true,
       });
       return z.NEVER;
     }
   })
-  .refine(checkPassword, { message: 'Two passwords should be same', path: ['confirm_password'] });
+  .refine(checkPassword, { message: '비밀번호가 일치하지 않습니다.', path: ['confirm_password'] });
 
 export async function createAccount(_prevState: unknown, formData: FormData) {
   const data = {
@@ -139,7 +139,7 @@ export async function createAccount(_prevState: unknown, formData: FormData) {
     session.id = user.id;
     await session.save();
 
-    // 5. redirect '/log-in'
-    redirect('/log-in');
+    // 5. redirect '/main'
+    redirect('/main');
   }
 }
