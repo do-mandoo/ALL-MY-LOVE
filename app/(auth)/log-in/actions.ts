@@ -29,9 +29,6 @@ const checkUserExists = async (username: string) => {
   return Boolean(user);
 };
 
-// // endsWith를 사용하여 문자열의 끝이 @zod.com인지 확인
-// const checkEmail = (email: string) => email.endsWith(EMAIL_DOMAIN);
-
 const formSchema = z
   .object({
     email: z.string({ message: '유효한 이메일을 입력하세요.' }).email().toLowerCase(),

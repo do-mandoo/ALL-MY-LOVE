@@ -1,4 +1,3 @@
-import TweetList, { TweetWithUser } from '@/components/tweet-list';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
 import Link from 'next/link';

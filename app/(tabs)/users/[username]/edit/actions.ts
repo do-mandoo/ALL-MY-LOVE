@@ -5,15 +5,7 @@ import getSession from '@/lib/session';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
-import {
-  EMAIL_DOMAIN,
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_REGEX,
-  USERNAME_MIN_LENGTH,
-} from '@/lib/constants';
-
-// 이메일 도메인 검사
-const checkEmail = (email: string) => email.endsWith(EMAIL_DOMAIN);
+import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, USERNAME_MIN_LENGTH } from '@/lib/constants';
 
 // username 금지 단어 검사
 const checkUsername = (username: string) => !username.includes('potato');
@@ -28,11 +20,7 @@ const profileSchema = z
       .trim()
       .toLowerCase()
       .refine(checkUsername, 'No potatoes allowed!'),
-    email: z
-      .string({ message: '유효한 이메일을 입력하세요.' })
-      .email()
-      .toLowerCase()
-      .refine(checkEmail, `오직 "${EMAIL_DOMAIN}" 이메일만 허용됩니다.`),
+    email: z.string({ message: '유효한 이메일을 입력하세요.' }).email().toLowerCase(),
     bio: z.string().max(160, 'bio정보는 160자까지 제한됩니다.').optional(),
     currentPassword: z.string().min(PASSWORD_MIN_LENGTH, {
       message: `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상이어야 합니다.`,

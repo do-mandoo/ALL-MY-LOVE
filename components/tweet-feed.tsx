@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import TweetList, { TweetWithUser } from '@/components/tweet-list';
 import TweetListPagination from '@/components/tweet-list-pagination';
 import db from '@/lib/db';
@@ -5,7 +6,9 @@ import db from '@/lib/db';
 interface TweetFeedProps {
   page: number;
   perPage: number;
-  where?: Record<string, any>;
+  // where?: Record<string, any>;
+  // any 대신 Prisma의 WhereInput 타입 사용
+  where?: Prisma.TweetWhereInput;
 }
 
 export default async function TweetFeed({ page, perPage, where = {} }: TweetFeedProps) {

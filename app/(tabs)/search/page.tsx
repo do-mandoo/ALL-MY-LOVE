@@ -1,4 +1,3 @@
-import TweetList, { TweetWithUser } from '@/components/tweet-list';
 import db from '@/lib/db';
 import Input from '@/components/input';
 import Button from '@/components/button';
