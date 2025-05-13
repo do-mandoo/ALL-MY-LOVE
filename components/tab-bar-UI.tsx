@@ -4,16 +4,18 @@ import {
   HomeIcon as SolidHomeIcon,
   NewspaperIcon as SolidNewspaperIcon,
   UserIcon as SolidUserIcon,
-  MagnifyingGlassIcon as SolidMagnifyingGlassIcon,
+  MagnifyingGlassCircleIcon as SolidMagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
 import {
   HomeIcon as OutlineHomeIcon,
   NewspaperIcon as OutlineNewspaperIcon,
   UserIcon as OutlineUserIcon,
-  MagnifyingGlassIcon as OutlineMagnifyingGlassIcon,
+  MagnifyingGlassCircleIcon as OutlineMagnifyingGlassIcon,
+  ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { logOut } from '@/lib/log-out';
 
 interface ITabBarUI {
   profilePath: string;
@@ -22,7 +24,7 @@ interface ITabBarUI {
 export default function TabBarUI({ profilePath }: ITabBarUI) {
   const pathname = usePathname();
   return (
-    <div className='fixed bottom-0 w-full mx-auto max-w-screen-md grid grid-cols-4 border-neutral-600 border-t px-5 py-3 *:text-white bg-neutral-800'>
+    <div className='fixed bottom-0 w-full mx-auto max-w-screen-md grid grid-cols-5 border-neutral-600 border-t px-5 py-2 *:text-white bg-neutral-800'>
       <Link href='/main' className='flex flex-col items-center gap-px'>
         {pathname === '/main' ? (
           <SolidHomeIcon className='w-7 h-7' />
@@ -55,14 +57,12 @@ export default function TabBarUI({ profilePath }: ITabBarUI) {
         )}
         <span>프로필</span>
       </Link>
-      {/* <div className='absolute top-[-80px] right-0'>
-        <Link
-          href='/tweet/add'
-          className='bg-fuchsia-500 flex items-center justify-center rounded-full size-14 text-white transition-colors hover:bg-fuchsia-400'
-        >
-          <PlusIcon className='size-8' />
-        </Link>
-      </div> */}
+      <form action={logOut} className='flex flex-col items-center gap-px cursor-pointer'>
+        <button type='submit' className='btn-red flex flex-col items-center cursor-pointer '>
+          <ArrowRightEndOnRectangleIcon className='w-7 h-7' />
+          로그아웃
+        </button>
+      </form>
     </div>
   );
 }

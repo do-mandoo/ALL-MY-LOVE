@@ -6,9 +6,10 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import {
-  EMAIL_DOMAIN,
+  PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REGEX,
+  USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from '@/lib/constants';
 
@@ -28,27 +29,20 @@ const checkUserExists = async (username: string) => {
   return Boolean(user);
 };
 
-// endsWith를 사용하여 문자열의 끝이 @zod.com인지 확인
-const checkEmail = (email: string) => email.endsWith(EMAIL_DOMAIN);
-
 const formSchema = z
   .object({
-    email: z
-      .string({ message: '유효한 이메일을 입력하세요.' })
-      .email()
-      .toLowerCase()
-      .refine(checkEmail, `오직 "${EMAIL_DOMAIN}" 이메일만 허용됩니다.`),
+    email: z.string({ message: '유효한 이메일을 입력하세요.' }).email().toLowerCase(),
     username: z
       .string()
       .min(USERNAME_MIN_LENGTH, {
-        message: `사용자 이름은 ${USERNAME_MIN_LENGTH}자 이상이어야 합니다.`,
+        message: `Username은 최소 ${USERNAME_MIN_LENGTH}자, 최대 ${USERNAME_MAX_LENGTH}자까지 입력이 가능합니다.`,
       })
       .trim()
       .toLowerCase(),
     password: z
       .string()
       .min(PASSWORD_MIN_LENGTH, {
-        message: `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상이어야 합니다.`,
+        message: `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상, ${PASSWORD_MAX_LENGTH}자 이하로 입력하셔야 합니다.`,
       })
       .regex(PASSWORD_REGEX, {
         message: '비밀번호는 반드시 한 개 이상의 숫자를 포함해야 합니다(0123456789).',
