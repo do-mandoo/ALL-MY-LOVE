@@ -5,6 +5,7 @@ import {
   EMAIL_DOMAIN,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REGEX,
+  USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from '@/lib/constants';
 import db from '@/lib/db';
@@ -29,12 +30,19 @@ const formSchema = z
   .object({
     username: z
       .string({
-        invalid_type_error: 'Username must be a string!',
+        invalid_type_error: 'Username은 반드시 문자열입니다..',
         required_error: 'Where is my username???',
       })
       .min(USERNAME_MIN_LENGTH, {
-        message: `Username must be at least ${USERNAME_MIN_LENGTH} characters.`,
+        message: `Username은 최소 ${USERNAME_MIN_LENGTH}글자 이상이어야 합니다.`,
       })
+      .max(USERNAME_MAX_LENGTH, {
+        message: `Username은 최대 ${USERNAME_MAX_LENGTH}자까지 가능합니다.`,
+      })
+      .regex(
+        /^[\p{L}][\p{L}\p{N}_\-🌊✨🎉💖🌟]{1,9}$/u,
+        '첫 글자는 한글 또는 영어여야 하며, 이후에는 한글, 영문, 숫자, 언더바, 대시, 지정된 이모지🌊✨🎉💖🌟5개만 사용할 수 있습니다.'
+      )
       .trim()
       .toLowerCase()
       .refine(checkUsername, 'No potatoes allowed!'),
@@ -131,7 +139,7 @@ export async function createAccount(_prevState: unknown, formData: FormData) {
     session.id = user.id;
     await session.save();
 
-    // 5. redirect '/'
-    redirect('/');
+    // 5. redirect '/log-in'
+    redirect('/log-in');
   }
 }
