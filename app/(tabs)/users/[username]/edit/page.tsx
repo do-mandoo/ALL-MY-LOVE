@@ -9,7 +9,7 @@ interface IEditPage {
 
 export default async function ProfileEditPage({ params }: IEditPage) {
   const { username: rawUsername } = await params;
-  const username = rawUsername;
+  const username = decodeURIComponent(rawUsername);
 
   // 사용자 확인하여 로그인된 사용자만 접근
   const session = await getSession();
@@ -34,7 +34,7 @@ export default async function ProfileEditPage({ params }: IEditPage) {
 
   // 본인 여부 확인
   if (user.username !== username) {
-    return redirect(`users/${user.username}`);
+    return redirect(`/users/${user.username}`);
   }
 
   // EditProfileForm에 초기값 전달

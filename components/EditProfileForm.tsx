@@ -8,7 +8,11 @@ import Input from './input';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 interface IEditProfileForm {
-  initialUser: { username: string; email: string; bio: string | null };
+  initialUser: {
+    username: string;
+    email: string;
+    bio: string | null;
+  };
 }
 
 export default function EditProfileForm({ initialUser }: IEditProfileForm) {
@@ -25,11 +29,8 @@ export default function EditProfileForm({ initialUser }: IEditProfileForm) {
 
   // 성공 시 페이지 새로 고침
   useEffect(() => {
-    if (state?.wasSuccessful) {
-      // router.refresh();
-      router.back();
-    }
-  }, [state?.wasSuccessful, router]);
+    if (state === undefined) router.back();
+  }, [state, router]);
 
   return (
     <div className='flex flex-col px-5 bg-black w-full  h-screen'>
@@ -111,7 +112,7 @@ export default function EditProfileForm({ initialUser }: IEditProfileForm) {
         <Button text='Save' />
 
         {/* Form-level errors */}
-        {state?.formErrors.length > 0 && (
+        {state?.formErrors?.length > 0 && (
           <div className='text-red-500 space-y-2'>
             {state?.formErrors.map((err, i) => (
               <p key={i}>{err}</p>

@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 const robotoSlab = Roboto_Slab({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  icons: '/star_pendant.jpg',
   title: {
     template: '%s | All __ Love',
     default: 'All __ Love',
