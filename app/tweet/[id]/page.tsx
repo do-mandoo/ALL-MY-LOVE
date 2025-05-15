@@ -22,7 +22,7 @@ async function getTweet(id: number) {
 
 export default async function TweetDetail({ params }: { params: { id: string } }) {
   // 파라미터 검증
-  const { id } = await params;
+  const { id } = params;
   const tweetId = Number(id);
   if (isNaN(tweetId)) {
     return notFound();

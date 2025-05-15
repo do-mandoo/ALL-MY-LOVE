@@ -15,7 +15,7 @@ interface IUserProfile {
 }
 
 export default async function UserProfilePage({ params, searchParams }: IUserProfile) {
-  const { username: rawUsername } = await params;
+  const { username: rawUsername } = params;
   const username = decodeURIComponent(rawUsername);
   const page = parseInt(searchParams.page || '1', 10);
 
