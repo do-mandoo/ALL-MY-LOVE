@@ -14,8 +14,8 @@ interface ISearchPage {
   };
 }
 
-export default async function SearchPage({ searchParams }: ISearchPage) {
-  const { keyword: rawKeyword, page: rawPage } = await searchParams;
+const SearchPage = async ({ searchParams }: ISearchPage) => {
+  const { keyword: rawKeyword, page: rawPage } = searchParams;
   const keyword = rawKeyword?.trim() || '';
   const page = parseInt(rawPage || '1', 10);
   const perPage = 8;
@@ -56,4 +56,5 @@ export default async function SearchPage({ searchParams }: ISearchPage) {
       )}
     </div>
   );
-}
+};
+export default SearchPage;

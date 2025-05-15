@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default async function EditTweetPage({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
   const tweetId = Number(id);
 
   if (isNaN(tweetId)) return notFound();

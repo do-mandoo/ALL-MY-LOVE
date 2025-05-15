@@ -8,7 +8,7 @@ interface IEditPage {
 }
 
 export default async function ProfileEditPage({ params }: IEditPage) {
-  const { username: rawUsername } = await params;
+  const { username: rawUsername } = params;
   const username = decodeURIComponent(rawUsername);
 
   // 사용자 확인하여 로그인된 사용자만 접근
