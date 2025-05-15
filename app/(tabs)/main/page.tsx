@@ -1,12 +1,9 @@
+import { PageProps } from '@/.next/types/app/page';
 import TweetFeed from '@/components/tweet-feed';
 import TweetListHeader from '@/components/tweet-list-header';
 
-interface IProps {
-  searchParams: { page?: string };
-}
-
-export default function MainPage({ searchParams }: IProps) {
-  const { page: rawPage } = searchParams;
+export default async function MainPage({ searchParams }: PageProps) {
+  const { page: rawPage } = await searchParams;
   const page = parseInt(rawPage || '1', 10);
 
   return (
