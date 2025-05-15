@@ -3,14 +3,45 @@
 import { z } from 'zod';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 const ResponseSchema = z.object({
   id: z.string().regex(/^\d+$/, 'Invalid tweet ID').transform(Number),
   comment: z.string().min(1, '비어있으면 안됩니다.'),
 });
 
-export async function addResponse(formData: FormData) {
+//===================수정
+export async function updateTweet(_prevState: unknown, formData: FormData) {
+  // 유효성 검사
+  const id = formData.get('id');
+  const content = formData.get('content');
+
+  if (typeof id !== 'string' || typeof content !== 'string') return;
+
+  await db.tweet.update({
+    where: { id: Number(id) },
+    data: { tweet: content },
+  });
+
+  // 캐시 무효화
+  revalidatePath('/');
+  revalidatePath(`/tweet/${id}`);
+}
+
+//======삭제
+export async function daleteTweet(_prevState: unknown, formData: FormData) {
+  const id = formData.get('id');
+  if (typeof id !== 'string') return;
+
+  await db.tweet.delete({
+    where: { id: Number(id) },
+  });
+  revalidatePath('/');
+  revalidatePath('/main');
+}
+
+//=======댓글 추가
+export async function addResponse(_prevState: unknown, formData: FormData) {
   // 유효성 검사
   const data = {
     id: formData.get('id'),

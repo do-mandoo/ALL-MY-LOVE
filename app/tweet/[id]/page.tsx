@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Do_Hyeon } from 'next/font/google';
 import Image from 'next/image';
+import TweetActions from '@/components/tweet-actions';
 
 const dohyon = Do_Hyeon({ weight: '400', subsets: ['latin'] });
 
@@ -65,7 +66,10 @@ export default async function TweetDetail({ params }: { params: { id: string } }
       </div>
       <p className='text-lg'>{tweet.tweet}</p>
       <p className='text-sm text-gray-500'>{new Date(tweet.created_at).toLocaleString()}</p>
-      <LikeButton isLiked={isLiked} likeCount={likeCount} tweetId={tweetId} />
+      <div className='flex justify-between items-start mb-10 '>
+        <LikeButton isLiked={isLiked} likeCount={likeCount} tweetId={tweetId} />
+        <TweetActions tweetId={tweetId} />
+      </div>
       <CommentSection tweetId={tweetId} />
       <div className='text-end hover:underline'>
         <Link href='/main' className='text-purple-300'>
