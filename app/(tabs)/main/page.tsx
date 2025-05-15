@@ -1,12 +1,12 @@
 import TweetFeed from '@/components/tweet-feed';
 import TweetListHeader from '@/components/tweet-list-header';
 
-interface Props {
+interface IProps {
   searchParams: { page?: string };
 }
 
-export default async function MainPage({ searchParams }: Props) {
-  const { page: rawPage } = await searchParams;
+export default function MainPage({ searchParams }: IProps) {
+  const { page: rawPage } = searchParams;
   const page = parseInt(rawPage || '1', 10);
 
   return (
